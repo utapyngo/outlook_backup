@@ -13,11 +13,15 @@ So I don't lose them.
 # The program should backup all Calendar folders
 # The program should backup all Mail folders
 
+from __future__ import print_function
+
 import time
 import sys
+import os
+
 import win32com.client
 from pywintypes import com_error
-
+win32com.client.gencache.EnsureModule('{00062FFF-0000-0000-C000-000000000046}', 0, 9, 4)
 
 def main(args):
     '''If first argument is not empty it should be
@@ -48,8 +52,15 @@ def main(args):
         return
         
     # Create a Backup PST file
-    file_name = 'Backup {0}.pst'.format(time.strftime('%Y-%m-%d %H%M%S'))
-    ns.AddStore(file_name)
+    source_folder_name = source_folder.Name
+    file_name = 'Backup of {0} at {1}.pst'.format(source_folder_name, time.strftime('%Y-%m-%d %H-%M-%S'))
+    file_name = os.path.abspath(file_name)
+    print('Creating file {0}'.format(file_name))
+    try:
+        ns.AddStore(file_name)
+    except com_error as e:
+        print('Error: ' + str(e.excepinfo[2]))
+        raise
     try:
         backup_folder = ns.Session.Folders.GetLast()
         
@@ -57,12 +68,11 @@ def main(args):
         subfolders = source_folder.Folders
         for i in range(1, 1 + len(subfolders)):
             subfolder = subfolders[i]
-            print subfolder.Name
+            print(subfolder.Name)
             try:
                 subfolder.CopyTo(backup_folder)
             except com_error as e:
-                for arg in e.args:
-                    print arg
+                print('Error: ' + str(e.excepinfo[2]))
                 continue
     finally:        
         ns.RemoveStore(backup_folder)
