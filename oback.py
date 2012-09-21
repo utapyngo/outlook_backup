@@ -20,7 +20,11 @@ from pywintypes import com_error
 
 
 def main(args):
-
+    '''If first argument is not empty it should be
+    the name of the mailbox you want to backup.
+    If it is empty, you will be promted to select
+    a folder you want to backup.
+    '''
     source_folder_name = None
     if len(args) > 0:
         source_folder_name = args[0]
