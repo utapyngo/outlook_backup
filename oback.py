@@ -1,9 +1,12 @@
+# encoding: utf-8
+
 '''User stories:
 
 As a cautious Outlook user
 I want to backup my Contacts, Calendar and Mail
 So I don't lose them.
 '''
+
 # Requirements:
 # The program should ask for the mailbox name to backup
 # The program should automatically create Backup PST file
@@ -72,7 +75,7 @@ def main(args):
             try:
                 subfolder.CopyTo(backup_folder)
             except com_error as e:
-                print('Error: ' + str(e.excepinfo[2]))
+                print('Error: ' + unicode(e.excepinfo[2]))
                 continue
     finally:        
         ns.RemoveStore(backup_folder)
