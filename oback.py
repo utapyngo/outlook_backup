@@ -29,7 +29,7 @@ win32com.client.gencache.EnsureModule('{00062FFF-0000-0000-C000-000000000046}', 
 def main(args):
     '''If first argument is not empty it should be
     the name of the mailbox you want to backup.
-    If it is empty, you will be promted to select
+    If it is empty, you will be prompted to select
     a folder you want to backup.
     '''
     source_folder_name = None
